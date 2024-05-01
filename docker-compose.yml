@@ -1,10 +1,11 @@
-version: '3.8'
-
+version: '3'
 services:
-  db:
-    image: postgres:latest
+  postgres:
+    image: postgres
     restart: always
-    ports:
-      - '5432:5432'
     environment:
-      POSTGRES_PASSWORD: mypassword
+      POSTGRES_USER: cabral
+      POSTGRES_PASSWORD: 12345678
+      POSTGRES_DB: tasks
+    volumes:
+      - ./data:/var/lib/postgresql/data

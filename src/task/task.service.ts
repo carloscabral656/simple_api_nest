@@ -1,33 +1,30 @@
-import {
-  HttpException,
-  HttpStatus,
-  Injectable,
-  NotFoundException,
-  Param,
-} from '@nestjs/common';
-import { FindAllTasksParameters, TaskDto } from './task.dto';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { FindAllTasksParameters, TaskDto, TaskStatusEnum } from './task.dto';
+import { v4 as uuid } from 'uuid';
 
 @Injectable()
 export class TaskService {
   private tasks: TaskDto[] = [];
 
   findAll(params: FindAllTasksParameters): TaskDto[] {
-    return this.tasks.filter(t => {
-        let match = true;
+    return this.tasks.filter((t) => {
+      let match = true;
 
-        if(params.title != undefined && t.title.includes(params.title)) {
-            match = false;
-        }
+      if (params.title != undefined && t.title.includes(params.title)) {
+        match = false;
+      }
 
-        if(params.status != undefined && t.status.includes(params.status)) {
-            match = false;
-        }
+      if (params.status != undefined && t.status.includes(params.status)) {
+        match = false;
+      }
 
-        return match;
+      return match;
     });
   }
 
   create(task: TaskDto) {
+    task.id = uuid();
+    task.status = TaskStatusEnum.IN_PROGRESS;
     this.tasks.push(task);
   }
 
